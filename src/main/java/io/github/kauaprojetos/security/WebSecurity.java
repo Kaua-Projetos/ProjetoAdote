@@ -31,11 +31,16 @@ public class WebSecurity {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/users/save").permitAll()
-                        .requestMatchers(HttpMethod.DELETE,"/users/delete/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> {})
-                .formLogin(form -> form.permitAll()
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
