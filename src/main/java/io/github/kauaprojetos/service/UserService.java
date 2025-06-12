@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserService {
 
     @Autowired
