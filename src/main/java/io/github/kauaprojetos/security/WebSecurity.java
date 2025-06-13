@@ -29,7 +29,7 @@ public class WebSecurity {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/save").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
@@ -76,11 +76,12 @@ public class WebSecurity {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
-            "http://localhost:8000",
-            "http://localhost:5500",
-            "http://127.0.0.1:8000",
-            "http://127.0.0.1:5500",
-            "http://52.67.61.219:8080"
+                "http://localhost:8000",
+                "http://localhost:5500",
+                "http://127.0.0.1:8000",
+                "http://127.0.0.1:5500",
+                "http://52.67.61.219:8080",
+                "null"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
         configuration.setAllowedHeaders(List.of(
