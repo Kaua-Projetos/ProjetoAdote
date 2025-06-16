@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://52.67.61.219:8080", "http://localhost:8000"})
 public class UserController {
 
     @Autowired
