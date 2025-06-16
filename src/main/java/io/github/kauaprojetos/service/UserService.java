@@ -63,4 +63,21 @@ public class UserService {
         return repository.findByEmail(email);
     }
 
+    public UserModel autenticar(String email, String senha) {
+        Optional<UserModel> userOpt = repository.findByEmail(email);
+        if (userOpt.isEmpty()) {
+            throw new ErrorException("Email não encontrado.");
+        }
+
+        UserModel user = userOpt.get();
+
+        if (!passwordEncoder.matches(senha, user.getPassword())) {
+            throw new ErrorException("Senha incorreta.");
+        }
+
+        return user;
+    }
+
 }
+
+
