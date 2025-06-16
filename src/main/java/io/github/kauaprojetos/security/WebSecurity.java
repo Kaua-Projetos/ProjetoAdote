@@ -6,12 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -74,39 +71,33 @@ public class WebSecurity {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
+        CorsConfiguration config = new CorsConfiguration();
+
+        // Origens permitidas (adapte conforme o ambiente)
+        config.setAllowedOrigins(List.of(
                 "http://localhost:8000",
                 "http://localhost:5500",
-                "http://127.0.0.1:8000",
-                "http://127.0.0.1:5500",
-                "http://52.67.61.219:8080",
-                "null"
+                "http://52.67.61.219"
         ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
-        configuration.setAllowedHeaders(List.of(
-            "Authorization",
-            "Content-Type",
-            "X-Requested-With",
-            "Accept",
-            "Origin",
-            "Access-Control-Request-Method",
-            "Access-Control-Request-Headers",
-            "Access-Control-Allow-Origin",
-            "Access-Control-Allow-Headers",
-            "Access-Control-Allow-Methods"
-        ));
-        configuration.setExposedHeaders(List.of(
-            "Access-Control-Allow-Origin",
-            "Access-Control-Allow-Credentials",
-            "Access-Control-Allow-Headers",
-            "Access-Control-Allow-Methods"
-        ));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
 
+        // Métodos permitidos
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // Cabeçalhos permitidos
+        config.addAllowedHeader("*");
+
+        // Cabeçalhos expostos
+        config.setExposedHeaders(List.of("Authorization", "Content-Type"));
+
+        // Permitir cookies
+        config.setAllowCredentials(true);
+
+        // Cache do preflight
+        config.setMaxAge(3600L);
+
+        // Aplicar a config para todas as rotas
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 
