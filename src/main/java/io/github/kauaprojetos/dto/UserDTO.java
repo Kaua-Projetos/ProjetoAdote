@@ -2,8 +2,6 @@ package io.github.kauaprojetos.dto;
 
 
 import io.github.kauaprojetos.exception.ErrorException;
-import io.github.kauaprojetos.security.WebSecurity;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public record UserDTO(String nome, String email, String senha, String cpf) {
 
@@ -13,10 +11,13 @@ public record UserDTO(String nome, String email, String senha, String cpf) {
         }
     }
     public void passwordShort(){
-        if (senha.length() < 8){
+        if (senha == null) {
+            throw new ErrorException("Senha não pode ser nula!");
+        } else if (senha.length() < 8){
             throw new ErrorException("Senha muito curta!");
         }
     }
+
 
     @Override
     public String nome() {
