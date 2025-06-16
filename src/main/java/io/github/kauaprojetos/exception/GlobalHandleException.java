@@ -6,15 +6,24 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class GlobalHandleException extends RuntimeException{
+public class GlobalHandleException {
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<String> HandleException(Exception ex){
+    public ResponseEntity<String> handleConflict(Exception ex){
+        ex.printStackTrace(); // LOGA o erro no console
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(ErrorException.class)
-    public ResponseEntity<String> ErroException(Exception err){
-        return new ResponseEntity<>(err.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<String> handleInternal(Exception ex){
+        ex.printStackTrace(); // LOGA o erro no console
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // Captura qualquer outro erro desconhecido
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneric(Exception ex) {
+        ex.printStackTrace();
+        return new ResponseEntity<>("Erro interno no servidor.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
