@@ -53,4 +53,15 @@ public class UserController {
         ));
     }
 
+    @GetMapping("/{email}")
+    public ResponseEntity<?> getUserInfo(@PathVariable String email) {
+        UserModel user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(Map.of(
+                "nome", user.getName(),
+                "email", user.getEmail(),
+                "cpf", user.getCpf()
+        ));
+    }
+
+
 }
