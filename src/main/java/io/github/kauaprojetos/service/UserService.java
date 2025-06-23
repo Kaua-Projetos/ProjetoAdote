@@ -78,6 +78,11 @@ public class UserService {
         return user;
     }
 
+    public UserModel getUserByEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+
+
 }
 
 
